@@ -2,7 +2,8 @@
 
 @section('content')
 <h1>{{$category_name->category_name}}</h1>
-<br>
+<img width="200" height="150" src="{{ asset('storage/category/' . $category_name->category_image) }}" />
+<br><br>
     <table class="table table-striped">
         <thead>
           <tr>

@@ -44,12 +44,23 @@ class CategoriesController extends Controller
             'category_name' =>'required',
 
         ]);
+
+        if ($request->hasFile('file')) {
+
+            $request->validate([
+                'category_image' => 'mimes:jpeg,bmp,png' // Only allow .jpg, .bmp and .png file types.
+            ]);
+
+            // Save the file locally in the storage/public/ folder under a new folder named /category
+            $request->file->store('category', 'public');
+
         $category =new Category();
         $category->category_id=$request->input('category_id');
         $category->category_name=$request->input('category_name');
         $category->category_description=$request->input('category_description');
+        $category->category_image=$request->file->hashName();
         $category->save();
-
+    }
        return redirect('/categories')->with('success','Category Created');
     }
 
@@ -96,12 +107,24 @@ class CategoriesController extends Controller
             'category_name' =>'required',
 
         ]);
+        if ($request->hasFile('file')) {
+
+            $request->validate([
+                'category_image' => 'mimes:jpeg,bmp,png' // Only allow .jpg, .bmp and .png file types.
+            ]);
+
+            // Save the file locally in the storage/public/ folder under a new folder named /category
+            $request->file->store('category', 'public');
+
+
+
         $category =Category::find($id);
         $category->category_id=$request->input('category_id');
         $category->category_name=$request->input('category_name');
         $category->category_description=$request->input('category_description');
-
+        $category->category_image=$request->file->hashName();
         $category->save();
+            }
        return redirect('/categories')->with('success','Category Updated');
     }
 

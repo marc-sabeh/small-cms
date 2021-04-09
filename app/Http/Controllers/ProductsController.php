@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Product;
 use App\Category;
+use App\Product_image;
 use Illuminate\Support\Facades\DB;
 
 class ProductsController extends Controller
@@ -22,8 +23,9 @@ class ProductsController extends Controller
             ->select('*', DB::raw('(Select category_name from categories where category_id=products.category_id) as category_name'))
             ->get();
 
+        $product_images= Product_image::all();
 
-        return view('products.index')->with('products',$products);
+        return view('products.index')->with('products',$products)->with('product_images',$product_images);
     }
 
     /**
@@ -56,6 +58,33 @@ class ProductsController extends Controller
         $product->category_id=$request->input('category_id');
         $product->save();
 
+
+        if ($request->hasFile('filename')) {
+
+            // $request->validate([
+            //     'category_image' => 'mimes:jpeg,bmp,png' // Only allow .jpg, .bmp and .png file types.
+            // ]);
+
+            foreach($request->file('filename') as $image)
+            {
+                $name = $image->getClientOriginalName();
+                $image->store('products', 'public');
+                // $data[] = $name;
+
+                $product_image =new Product_image();
+                $product_image->product_id=$product->product_id;
+                $product_image->product_image=$image->hashName();
+                $product_image->save();
+            }
+
+
+            }
+
+       
+
+
+        
+
        return redirect('/products')->with('success','Product Created');
     }
 
@@ -80,6 +109,7 @@ class ProductsController extends Controller
     {
         $product =Product::find($id);
         $categories= Category::all();
+        // $product_images= Product_image::where('product_id', $id)->get();
         return view('products.edit')->with('product',$product)->with('categories',$categories);
     }
 
@@ -101,6 +131,21 @@ class ProductsController extends Controller
         $product->product_description=$request->input('product_description');
         $product->category_id=$request->input('category_id');
         $product->save();
+
+
+        // foreach($request->file('filename') as $image)
+        // {
+        //     $name = $image->getClientOriginalName();
+        //     $image->store('products', 'public');
+        //     // $data[] = $name;
+
+        //     $product_image =new Product_image();
+        //     $product_image->product_id=$product->product_id;
+        //     $product_image->product_image=$image->hashName();
+        //     $product_image->save();
+        // }
+
+        
        return redirect('/products')->with('success','Product Updated');
     }
 

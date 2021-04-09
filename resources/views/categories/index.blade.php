@@ -10,6 +10,7 @@
             <th scope="col">#</th>
             <th scope="col">Category Name</th>
             <th scope="col">Category Description</th>
+            <th scope="col">Category Image</th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -21,6 +22,7 @@
       <th scope="row">{{$category->category_id}}</th>
         <td><a href="/categories/{{$category->category_id}}">{{$category->category_name}}</a></td>
         <td><a href="/categories/{{$category->category_id}}">{{$category->category_description}}</a></td>
+        <td><a href="/categories/{{$category->category_id}}"><img width="200" height="150" src="{{ asset('storage/category/' . $category->category_image) }}" /></a></td>
         <td>
             <a href="/categories/{{$category->category_id}}/edit" class="btn btn-secondary float-left mr-1">Edit</a>
             <form action="/categories/{{$category->category_id}}" method="post">

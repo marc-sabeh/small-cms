@@ -2,7 +2,7 @@
 
 @section('content')
     <h1>Edit a Category</h1>
-<form action="/categories/{{$category->category_id}}" method="POST">
+<form action="/categories/{{$category->category_id}}" method="POST"  enctype="multipart/form-data">
     @csrf
     @method('PATCH')
     <div class="form-group">
@@ -12,6 +12,10 @@
     <div class="form-group">
         <label for="email">Category Name</label>
     <input type="text" name="category_name" id="category_name" placeholder="Category Name" class="form-control" value="{{$category->category_name}}">
+    </div>
+       <div class="form-group">
+        <label for="email">Category Image</label>
+    <input type="file" name="file" id="file" placeholder="Category Image" class="form-control" value="{{$category->category_image}}">
     </div>
     <div class="form-group">
         <label for="email">Category Description</label>

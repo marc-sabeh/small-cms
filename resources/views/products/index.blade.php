@@ -7,8 +7,9 @@
           <tr>
             <th scope="col">#</th>
             <th scope="col">Product Name</th>
-            <th scope="col">Products Description</th>
+            <th scope="col">Product Description</th>
             <th scope="col">Category Name</th>
+            <th scope="col">Product Images</th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -21,6 +22,13 @@
         <td><a>{{$product->product_name}}</a></td>
         <td><a>{{$product->product_description}}</a></td>
         <td><a>{{$product->category_name}}</a></td>
+        <td>
+          @foreach($product_images as $image)
+            @if($image->product_id == $product->product_id)
+              <img src="{{ asset('storage/products/' .$image->product_image) }}" style="height:50px; width:80px"/>
+            @endif
+           @endforeach
+        </td>
         <td>
             <a href="/products/{{$product->product_id}}/edit" class="btn btn-secondary float-left mr-1">Edit</a>
             <form action="/products/{{$product->product_id}}" method="post">
